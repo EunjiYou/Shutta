@@ -9,5 +9,15 @@ namespace Shutta
     {
         public int Number;
         public bool IsKwang;
+
+        public string ToText()
+        {
+            string text = Number.ToString(); // 3 -> "3"
+
+            if (IsKwang)
+                text += "K"; // "3" -> "3K"
+
+            return text;
+        }
     }
 }
