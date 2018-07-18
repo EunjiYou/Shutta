@@ -20,6 +20,7 @@ namespace Shutta
 
         public void TakeCard(Card card)
         {
+            Cards.Add(card);
         }
     }
 }
