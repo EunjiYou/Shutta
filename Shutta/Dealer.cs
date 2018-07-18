@@ -14,6 +14,8 @@ namespace Shutta
 
         public void Shuffle()
         {
+            _cards.Clear();
+
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 2; j++)
@@ -33,14 +35,14 @@ namespace Shutta
 
             _cards = _cards.OrderBy(x => Guid.NewGuid()).ToList();
 
-            _index = 0;
+            _indexToReturn = 0;
         }
 
-        private int _index = 0;
+        private int _indexToReturn = 0;
 
         public Card GetCard()
         {
-            return _cards[_index++];
+            return _cards[_indexToReturn++];
 
             //Card card = Cards[_index];
             //_index++;
