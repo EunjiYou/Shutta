@@ -10,13 +10,14 @@ namespace Shutta
         public Player(int no)
         {
             No = no;
+            Money = 200;
         }
 
         public int No;
 
         public int Money;
 
-        public List<Card> Cards;
+        public List<Card> Cards = new List<Card>();
 
         public void TakeCard(Card card)
         {

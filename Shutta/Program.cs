@@ -36,6 +36,8 @@ namespace Shutta
                 // 각 플레이어에 카드를 2장씩 준다.
                 for (int i = 0; i < players.Count; i++)
                 {
+                    players[i].Cards.Clear();
+
                     for (int j = 0; j < 2; j++)
                     {
                         Card card = dealer.GetCard();
@@ -65,8 +67,11 @@ namespace Shutta
                 Console.WriteLine($"P{players[i].No} : {players[i].Money}");
 
                 for (int j = 0; j < 2; j++)
-                    Console.Write(players[i].Cards[j].ToText() + " / ");
+                    Console.Write(players[i].Cards[j].ToText() + " ");
+                Console.WriteLine();
             }
+
+            Console.WriteLine();
 
             Console.WriteLine($"승자는 {winner.No}.");
         }
