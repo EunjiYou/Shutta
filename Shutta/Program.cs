@@ -18,7 +18,7 @@ namespace Shutta
             players.Add(new Player(0));
             players.Add(new Player(1));
 
-            Scorer scorer = new Scorer();
+            Scorer scorer = new SimpleScorer();
 
             // 둘 중 한 명이 오링날 때까지
             while (CanGoRound(players))
