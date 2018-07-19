@@ -26,12 +26,14 @@ namespace Shutta.Winform
             cardImages[0, 1] = ptb01;
             cardImages[1, 0] = ptb10;
             cardImages[1, 1] = ptb11;
+
+            rdbBasic.Checked = true;
         }
 
         Dealer dealer = new Dealer();
         Board board = new Board();
         List<Player> players = new List<Player>();
-        Scorer scorer = new SimpleScorer();
+        Scorer scorer = new BasicScorer();
 
         private Label[] moneyLabels = new Label[2];
 
@@ -39,46 +41,43 @@ namespace Shutta.Winform
 
         private void btnRound_Click(object sender, EventArgs e)
         {
+            // 딜러가 카드를 섞음
+            dealer.Shuffle();
 
-
-            // 둘 중 한 명이 오링날 때까지
-            while (CanGoRound(players))
+            // 판돈 내기
+            for (int i = 0; i < players.Count; i++)
             {
-                // 딜러가 카드를 섞음
-                dealer.Shuffle();
+                players[i].Money -= 100;
+                board.Money += 100;
+            }
 
-                // 판돈 내기
-                for (int i = 0; i < players.Count; i++)
+            // 각 플레이어에 카드를 2장씩 준다.
+            for (int i = 0; i < players.Count; i++)
+            {
+                players[i].Cards.Clear();
+
+                for (int j = 0; j < 2; j++)
                 {
-                    players[i].Money -= 100;
-                    board.Money += 100;
+                    Card card = dealer.GetCard();
+                    players[i].TakeCard(card);
                 }
+            }
 
-                // 각 플레이어에 카드를 2장씩 준다.
-                for (int i = 0; i < players.Count; i++)
-                {
-                    players[i].Cards.Clear();
+            // 승자를 찾는다
+            Player winner = scorer.GetWinner(players[0], players[1]);
 
-                    for (int j = 0; j < 2; j++)
-                    {
-                        Card card = dealer.GetCard();
-                        players[i].TakeCard(card);
-                    }
-                }
-
-                // 승자를 찾는다
-                Player winner = scorer.GetWinner(players[0], players[1]);
-
-                if (winner == null)
-                    continue;
-
+            if (winner != null)
+            {
                 // 판돈을 승자에게 준다.
                 winner.Money += board.Money;
                 board.Money = 0;
-
-                // 플레이어가 가진 카드와 소지금, 승자를 출력한다.
-                PrintRoundResult(players, winner);
             }
+
+            // 플레이어가 가진 카드와 소지금, 승자를 출력한다.
+            PrintRoundResult(players, winner);
+
+            if (CanGoRound(players) == false)
+                btnRound.Enabled = false;
         }
 
         private void PrintRoundResult(List<Player> players, Player winner)
@@ -94,6 +93,18 @@ namespace Shutta.Winform
                     cardImages[i, j].Image = image;
                 }
             }
+
+            if (winner.No == 0)
+            {
+                grbPlayer0.BackColor = Color.Yellow;
+                grbPlayer1.BackColor = Color.Transparent;
+            }
+            else
+            {
+                grbPlayer0.BackColor = Color.Transparent;
+                grbPlayer1.BackColor = Color.Yellow;
+            }
+
 
             Text = $"승자는 {winner.No}.";
         }
@@ -150,6 +161,16 @@ namespace Shutta.Winform
                         throw new Exception();
                 }
             }
+        }
+
+        private void rdbSimple_CheckedChanged(object sender, EventArgs e)
+        {
+            scorer = new SimpleScorer();
+        }
+
+        private void rdbBasic_CheckedChanged(object sender, EventArgs e)
+        {
+            scorer = new BasicScorer();
         }
     }
 }
