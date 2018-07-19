@@ -1,4 +1,11 @@
-﻿using System;
+﻿// publisher (HTML + CSS)
+// coder
+// programmer (developer)
+// architecture
+// tester (!= Quality Assurance), Unit Test
+// Project Manager / Product Manager
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
